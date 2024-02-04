@@ -8,8 +8,6 @@ import React, { useState } from 'react';
 import Pertanyaan from './pertanyaan';
 
 export default async function App() {
-  const prisma = new PrismaClient();
-  const pertanyaan = await prisma.pertanyaan.findMany();
   return (
     <main>
       <Header />

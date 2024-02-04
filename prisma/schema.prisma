@@ -1,11 +1,47 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model evaluasi {
+  id           Int    @id @default(autoincrement())
+  nim          String @db.VarChar(10)
+  nama         String @db.VarChar(50)
+  jurusan      String @db.VarChar(50)
+  proyek_kerja String @db.VarChar(50)
+  pertanyaan   String @db.VarChar(200)
+  jawaban      String @db.VarChar(10)
+  bobot        Int
+}
+
+model jurusan {
+  id      Int     @id @default(autoincrement()) @db.UnsignedInt
+  jurusan String? @db.VarChar(100)
+}
+
+model pertanyaan {
+  id                    Int      @id
+  pertanyaan            String   @db.Text
+  programmer            Boolean?
+  software_engineer     Boolean?
+  web_developer         Boolean?
+  mobile_developer      Boolean?
+  data_scientist        Boolean?
+  cybersecurity_analyst Boolean?
+  game_developer        Boolean?
+  system_analyst        Boolean?
+  konsultan_it          Boolean?
+}
+
+model prospek_kerja {
+  id          Int     @id @default(autoincrement())
+  nama        String  @db.VarChar(50)
+  deskripsi   String  @db.Text
+  gaji        Decimal @db.Decimal(10, 2)
+  kualifikasi String  @db.Text
+  jurusan_id  Int?
 }

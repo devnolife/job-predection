@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { pertanyaan } from "./data";
-
+import axios from 'axios'
 export default function Pertanyaan() {
   const [jawaban, setJawaban] = useState({});
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [completed, setCompleted] = useState(false);
   const [jenjangKarir, setJenjangKarir] = useState("");
+  const [pertanyaan, setPertanyaan] = useState([]);
 
   const handleJawaban = (pertanyaanId: number, jawabanValue: string) => {
     setJawaban((prevJawaban) => ({
@@ -17,6 +17,11 @@ export default function Pertanyaan() {
     setCurrentQuestion((prevQuestion) => (prevQuestion + 1 < pertanyaan.length ? prevQuestion + 1 : prevQuestion));
     setCompleted(currentQuestion + 1 === pertanyaan.length);
   };
+
+  axios.get('http://localhost:8000/api/pertanyaan')
+    .then((response) => {
+      setPertanyaan(response.data);
+    })
 
   const dekripsiJenjangKarir = (jenjangKarir: string) => {
     const data = [
@@ -113,7 +118,7 @@ export default function Pertanyaan() {
     };
 
     pertanyaan.forEach((item) => {
-      const jawabanValue = jawaban[item.id as keyof typeof jawaban];
+      const jawabanValue = jawaban[item?.id as keyof typeof jawaban];
       if (jawabanValue === "Iya") {
         Object.keys(jenjangKarirCount).forEach((karir) => {
           if (item[karir as keyof typeof item]) {
